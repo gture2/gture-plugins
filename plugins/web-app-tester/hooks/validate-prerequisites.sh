@@ -8,10 +8,18 @@ set -euo pipefail
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | grep -o '"command":"[^"]*"' | head -1 | cut -d'"' -f4 2>/dev/null || echo "")
 
-# Check Node.js is available (required to execute the generated Playwright test script)
+# Check Node.js is available (required for npx and Playwright browser install)
 if ! command -v node > /dev/null 2>&1; then
     echo '{"decision": "block", "reason": "node is not installed or not in PATH. Node.js 20+ is required to run Playwright tests. Install Node.js from https://nodejs.org — see docs/setup.md"}'
     exit 0
+fi
+
+# Check playwright-cli is available (non-blocking if npx is present — orchestrator uses npx fallback)
+if ! command -v playwright-cli > /dev/null 2>&1; then
+    if ! command -v npx > /dev/null 2>&1; then
+        echo '{"decision": "block", "reason": "playwright-cli is not installed and npx is not available. Install Node.js 20+ (which includes npx), or install playwright-cli globally: npm install -g @playwright/cli"}'
+        exit 0
+    fi
 fi
 
 # Only validate gh commands beyond this point

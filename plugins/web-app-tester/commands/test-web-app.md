@@ -39,7 +39,7 @@ If no test plan is found, the agent **auto-generates one** based on the PR/issue
 |---|---|
 | ✅ PASSED | Step executed successfully, expected outcome observed |
 | ❌ FAILED | Step executed but expected outcome was not observed |
-| 🔴 BLOCKED | Step could not execute (element not found, timeout, page error) |
+| 🔴 BLOCKED | Step could not execute (element not found, timeout, page error, or auth gate detected) |
 
 Failed and blocked steps are retried up to 3 times before being marked final.
 
@@ -52,6 +52,7 @@ Failed and blocked steps are retried up to 3 times before being marked final.
 ## Prerequisites
 
 - Node.js 20+ available (`node --version`)
+- `playwright-cli` installed globally (`npm install -g @playwright/cli`), or `npx` available as fallback
 - `gh` CLI installed and authenticated (run `gh auth login` or set `GITHUB_TOKEN`)
 - See `docs/setup.md` for full setup instructions
 
