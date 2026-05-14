@@ -64,13 +64,41 @@ node -e "const {chromium}=require('playwright');chromium.executablePath()" 2>/de
   && echo "BROWSER_READY" || echo "BROWSER_MISSING"
 ```
 
-If output is `BROWSER_READY` → skip to Step 2 immediately (saves 30–60 seconds).
-
-If output is `BROWSER_MISSING` → install with a pinned version to avoid npx resolution overhead:
+If output is `BROWSER_MISSING` → install the binary **and** its system shared libraries. Try `--with-deps` first (this is what gets `libnss3`, `libglib-2.0.so.0`, `libatk-1.0.so.0`, `libdbus-1.so.3`, etc. installed via `apt-get`). If that path is unavailable (no root / sandboxed runner), fall back to the binary-only install — system libs must already be baked into the environment in that case:
 
 ```bash
-npx --yes playwright@1.49.0 install chromium 2>&1
+npx --yes playwright@1.49.0 install --with-deps chromium 2>&1 \
+  || npx --yes playwright@1.49.0 install chromium 2>&1
 ```
+
+**Preflight launch — catch missing system libraries before executing the test plan:**
+
+A cached binary is not enough. Headless Chromium also needs `libnss3`, `libnspr4`, `libglib-2.0.so.0`, `libatk-1.0.so.0`, `libdbus-1.so.3`, and friends. Try a single launch+close cycle. If it fails, the test plan cannot run — **do not iterate the steps and accumulate 9× retry timeouts.**
+
+```bash
+LAUNCH_PROBE=$(node -e "const{chromium}=require('playwright');chromium.launch({headless:true}).then(b=>b.close()).then(()=>console.log('LAUNCH_OK')).catch(e=>{console.error('LAUNCH_FAIL: '+e.message);process.exit(1);})" 2>&1)
+echo "$LAUNCH_PROBE"
+```
+
+If `LAUNCH_PROBE` contains `LAUNCH_OK` → continue to Step 2.
+
+If `LAUNCH_PROBE` contains `LAUNCH_FAIL` and any of `libnss3`, `libglib`, `libatk`, `libdbus`, `shared libraries`, `Host system is missing dependencies`, `install-deps`, `playwright install` → **immediately** mark every step in `TEST_PLAN` as `🔴 BLOCKED` with reason:
+
+```
+Sandbox image missing Chromium system shared libraries (libnss3 / libglib / libatk / libdbus / etc.).
+playwright install-deps requires root and is not available in this runner. Rebuild the runner image with the
+system libraries baked in. Recommended Dockerfile additions:
+
+  ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+  RUN npm install -g @anthropic-ai/claude-code @playwright/cli playwright \
+      && playwright install --with-deps chromium \
+      && chmod -R a+rX /ms-playwright \
+      && rm -rf /var/lib/apt/lists/* /root/.npm
+
+Or base the image on mcr.microsoft.com/playwright:v1.49.0-jammy which already includes Chromium + deps.
+```
+
+Then skip directly to Step 3 (cleanup) — do **not** attempt `open`, retries, or screenshots. The browser will not launch and every retry will fail identically.
 
 ---
 

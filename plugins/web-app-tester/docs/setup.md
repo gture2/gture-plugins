@@ -20,6 +20,29 @@ Install from [nodejs.org](https://nodejs.org) if not present.
 On the first test run the plugin installs Chromium (~150 MB) via npx. This takes ~30–60 seconds.
 
 **Every subsequent run skips the install entirely** — the plugin checks for a cached browser before attempting any download.
+
+### Chromium System Dependencies
+
+Headless Chromium needs system shared libraries (`libnss3`, `libnspr4`, `libglib-2.0.so.0`, `libatk-1.0.so.0`, `libdbus-1.so.3`, and others). The plugin installs these automatically via `playwright install --with-deps chromium` when the runner has root/`sudo`.
+
+**Sandboxed or rootless runners cannot install these at runtime.** `apt-get install` and `playwright install-deps` both require root and will fail. If you see the run report all steps as `BLOCKED` with a missing-shared-libraries message, bake the deps into the runner image instead:
+
+```dockerfile
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+RUN npm install -g @anthropic-ai/claude-code @playwright/cli playwright \
+    && playwright install --with-deps chromium \
+    && chmod -R a+rX /ms-playwright \
+    && rm -rf /var/lib/apt/lists/* /root/.npm
+```
+
+Or base the image on Microsoft's prebuilt Playwright image, which ships Chromium + every system dep already:
+
+```dockerfile
+FROM mcr.microsoft.com/playwright:v1.49.0-jammy
+```
+
+The plugin runs a one-shot launch probe before iterating the test plan, so a misconfigured image fails fast with this exact guidance instead of timing out across every step.
+
 ---
 
 ## playwright-cli
@@ -152,7 +175,10 @@ Run `gh auth login` or export `GITHUB_TOKEN` with a valid personal access token.
 This is handled automatically — the plugin installs playwright-cli via `npm install -g` and resolves the path via `npm root -g` if the binary is not on PATH. No manual action needed. If the run still fails, verify that Node.js 20+ and npm are installed and working.
 
 **`_wat_pcli` file left in project directory**
-The plugin deletes this wrapper at the end of every run, including failed runs. If it persists, the run was interrupted before cleanup. Delete it manually: `rm _wat_pcli`
+The plugin deletes this wrapper at the end of every run, including failed runs. If it persists, the run was interrupted before cleanup. Delete it manually: `rm _wat_pcli`.
+
+**All steps `BLOCKED` with "missing system shared libraries" / `libnss3` / `libglib-2.0.so.0`**
+The runner image is missing Chromium's native deps and lacks root to install them at runtime. See the **Chromium System Dependencies** section above — bake `playwright install --with-deps chromium` into the image, or switch to `mcr.microsoft.com/playwright:v1.49.0-jammy`.
 
 **`AZURE-DEVOPS-TOKEN is not set`**
 Export the token: `export AZURE-DEVOPS-TOKEN=your_pat_here`. Create a PAT in Azure DevOps with Work Items (Read+Write), Code (Read), and Pull Requests (Read+Write) scopes.

@@ -29,7 +29,7 @@ Execute all steps autonomously without pausing for user input. Do not ask for co
 | `Bash(git ...)` | All platforms: detect remote URL and platform |
 | `Bash(playwright-cli ...)` | All browser interactions: navigate, click, fill, snapshot, screenshot |
 | `Bash(npm ...)` | Install playwright-cli globally if not already present (`npm install -g @playwright/cli@latest`) |
-| `Bash(npx ...)` | Install Playwright Chromium browser if not already cached |
+| `Bash(npx ...)` | Install Playwright Chromium browser + system shared libs if not already cached (`npx playwright install --with-deps chromium`, falls back to binary-only when sandbox lacks root) |
 
 ---
 
