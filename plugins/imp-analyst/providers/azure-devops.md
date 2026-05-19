@@ -63,6 +63,38 @@ Store the result as `PR_ID`. If empty, the branch has no open PR — output a wa
 
 ---
 
+## Posting the Starting Comment
+
+Post a plain PR comment thread immediately after platform detection so the author knows the impact analysis has started and that it can take a few minutes to complete. This fires as the very first write action.
+
+```bash
+cat > /tmp/pr_thread_body.md <<'BODY'
+**Impact analysis in progress**
+
+I'm running impact analysis covering change scope, dependency tracing, feature mapping, and risk assessment. The full QA-focused impact report will be posted as a comment when complete — this may take a few minutes.
+BODY
+
+python3 - <<'PY' > /tmp/pr_thread_payload.json
+import json
+body = open('/tmp/pr_thread_body.md').read()
+print(json.dumps({
+    "comments": [{"content": body, "commentType": 1}],
+    "status": "active",
+    "properties": {"Microsoft.TeamFoundation.Discussion.SupportsMarkdown": 1},
+}))
+PY
+
+curl -sS -w "\nHTTP_STATUS:%{http_code}\n" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Basic $(echo -n ":${AZURE_TOKEN}" | base64 -w0)" \
+  -X POST --data @/tmp/pr_thread_payload.json \
+  "${API_BASE}/_apis/git/repositories/${AZURE_REPO}/pullRequests/${PR_ID}/threads?api-version=7.1"
+```
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the analysis.
+
+---
+
 ## Posting the Impact Report
 
 Post the compiled impact report as a new comment thread on the PR:

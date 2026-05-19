@@ -107,6 +107,36 @@ REPO=$(echo "$REMOTE"  | sed 's|https://github.com/||;s|git@github.com:||' | cut
 
 ---
 
+## Posting the "Analysis in Progress" Comment
+
+Post a single starting comment on the entry artefact immediately after platform detection so the author knows the impact analysis has started and that it can take a few minutes to complete.
+
+**If `ENTRY_TYPE == pr` (or current branch):**
+
+```bash
+gh pr comment ${PR_NUMBER} --body "$(cat <<'EOF'
+🧪 **Impact analysis & test strategy in progress**
+
+Running impact analysis covering blast radius, feature mapping, and risk assessment, and generating a structured test strategy. The full report will be posted as a comment when complete — this may take a few minutes.
+EOF
+)"
+```
+
+**If `ENTRY_TYPE == issue`:**
+
+```bash
+gh issue comment ${ISSUE_NUMBER} --body "$(cat <<'EOF'
+🧪 **Impact analysis & test strategy in progress**
+
+Running impact analysis covering blast radius, feature mapping, and risk assessment, and generating a structured test strategy. The full report will be posted as a comment when complete — this may take a few minutes.
+EOF
+)"
+```
+
+If posting fails, output a single warning line and continue — do not stop the analysis.
+
+---
+
 ## Posting the Report
 
 Post a **markdown-formatted summary** as a comment. The full HTML report is kept locally.

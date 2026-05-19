@@ -44,7 +44,7 @@ From the remote URL, determine the platform:
 - Contains `dev.azure.com` or `visualstudio.com` → **Azure DevOps** (use `curl` + `AZURE-DEVOPS-TOKEN`)
 - Anything else → **Generic / plain text** (fetch via user input or local file, write the report to disk)
 
-Store the detected platform — it determines how the item is fetched (Step 1) and how the elaboration is delivered (Step 8).
+Store the detected platform — it determines how the item is fetched (Step 1) and how the elaboration is delivered (Step 9).
 
 > **CI override:** If `PLATFORM`, `REPO_URL`, and `ISSUE_NUMBER` environment variables are set, use them directly instead of detecting from git remote.
 
@@ -94,7 +94,19 @@ curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
 
 If the platform is not GitHub or Azure DevOps, the item content cannot be fetched automatically. Prompt the user to paste the requirement text, or read it from a local file if one is specified.
 
-### 2. Index Repo Documentation & Existing Requirements
+### 2. Post an "Elaboration in Progress" Comment
+
+Immediately after fetching the item in Step 1, post a comment on the issue / work item so the author knows the elaboration has started. **Do not run any further documentation indexing, requirement search, or sub-agent work before this step** — the comment must land within the first 3 tool calls.
+
+Use the platform-appropriate method:
+
+- **GitHub:** see `providers/github.md` — Posting the "Elaboration in Progress" comment section
+- **Azure DevOps:** see `providers/azure-devops.md` — Posting the Starting Comment section
+- **Generic / plain text:** skip — no API available
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the elaboration.
+
+### 3. Index Repo Documentation & Existing Requirements
 
 This is the most important step before launching the analysts. Build a grounded understanding of the product **and** the existing requirements landscape so every analyst reasons against real context — not generic best practices.
 
@@ -145,11 +157,11 @@ For the new item, write a short *Fit with Existing Requirements* note answering:
 - **Contradictions** — does this conflict with a previously-agreed requirement, ADR, or feature brief?
 - **Gaps** — does this expose something the existing requirements don't say?
 
-This *Fit* note becomes its own comment in Step 8. It is the highest-leverage thing the plugin produces, because it surfaces alignment problems before any code is written.
+This *Fit* note becomes its own comment in Step 9. It is the highest-leverage thing the plugin produces, because it surfaces alignment problems before any code is written.
 
 **If the repo has no documentation**, note this as an observation and proceed — the sub-agents will work from the issue content alone, and the *Fit* section is simply omitted.
 
-### 3. Classify the Item
+### 4. Classify the Item
 
 Before launching sub-agents:
 - Identify the type of item (story, task, bug, spike) — used to **tune the depth** of analysis (a bug fix should not produce a 500-line elaboration)
@@ -157,9 +169,9 @@ Before launching sub-agents:
 - Estimate complexity (small/medium/large)
 - Note any existing constraints or context in the body
 
-### 4. Run the Four Phase 1 Analysts (in parallel)
+### 5. Run the Four Phase 1 Analysts (in parallel)
 
-Pass each sub-agent: the item content (title, body, comments), related items, **and** the documentation summary + Fit note from Step 2. Launch all four with the `Agent` tool in parallel.
+Pass each sub-agent: the item content (title, body, comments), related items, **and** the documentation summary + Fit note from Step 3. Launch all four with the `Agent` tool in parallel.
 
 | Agent | Lens it brings |
 |---|---|
@@ -168,13 +180,13 @@ Pass each sub-agent: the item content (title, body, comments), related items, **
 | **journey-mapper** | End-to-end user workflow this change participates in — upstream triggers, downstream consequences, **usability touchpoints, friction risks**, journey gaps |
 | **persona-analyst** | Affected personas, where their goals diverge, persona-specific edge cases, **adoption considerations** specific to each (onboarding, migration, change management, success signals) |
 
-### 5. Run the Phase 2 Analyst
+### 6. Run the Phase 2 Analyst
 
 After Phase 1 completes, pass Phase 1 outputs alongside the issue content and documentation summary:
 
 - **gap-risk-analyst** — open questions, assumptions worth validating, acceptance criteria worth tightening, edge cases, dependencies. **Framing: prompts for the team, not blockers.**
 
-### 6. Compile the Elaboration
+### 7. Compile the Elaboration
 
 Aggregate all sub-agent outputs into the structure defined in `styles/elaboration-template.md`. Read that file and follow its template exactly.
 
@@ -188,7 +200,7 @@ Aggregate all sub-agent outputs into the structure defined in `styles/elaboratio
 - If the issue body is empty or contains only a title, flag this as a critical gap and elaborate from the title alone
 - Frame gaps as **discussion prompts**, not as work blockers — the team will decide
 
-### 7. Apply the Readiness Signal
+### 8. Apply the Readiness Signal
 
 Pick one signal as a **triage hint** for the team. The signal is secondary; the elaboration is the value.
 
@@ -200,7 +212,7 @@ Pick one signal as a **triage hint** for the team. The signal is secondary; the 
 
 ---
 
-## 8. Post the Elaboration
+## 9. Post the Elaboration
 
 **Never modify the issue/work item body.** Post each lens as a separate comment, in this order:
 

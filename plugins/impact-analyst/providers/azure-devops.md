@@ -132,6 +132,34 @@ git diff origin/${BASE}...${PR_BRANCH}
 
 ---
 
+## Posting the Starting Comment
+
+Post a starting comment on the entry artefact immediately after platform detection so the author knows the impact analysis has started and that it can take a few minutes to complete.
+
+**If `ENTRY_TYPE == pr` (post on the PR thread):**
+
+```bash
+curl -s -u ":${AZURE_DEVOPS_TOKEN}" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  "${API_BASE}/_apis/git/repositories/${AZURE_REPO}/pullrequests/${PR_ID}/threads?api-version=7.1" \
+  -d '{"comments":[{"content":"🧪 **Impact analysis & test strategy in progress**\n\nRunning impact analysis covering blast radius, feature mapping, and risk assessment, and generating a structured test strategy. The full report will be attached to the linked work item / posted as a comment when complete — this may take a few minutes.","commentType":1}],"status":"active","properties":{"Microsoft.TeamFoundation.Discussion.SupportsMarkdown":1}}'
+```
+
+**If `ENTRY_TYPE == wi` (post on the work item discussion):**
+
+```bash
+curl -s -u ":${AZURE_DEVOPS_TOKEN}" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  "${API_BASE}/_apis/wit/workitems/${WORK_ITEM_ID}/comments?format=markdown&api-version=7.1-preview.4" \
+  -d '{"text":"🧪 **Impact analysis & test strategy in progress**\n\nRunning impact analysis covering blast radius, feature mapping, and risk assessment, and generating a structured test strategy. The full HTML report will be attached to this work item when complete — this may take a few minutes."}'
+```
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the analysis.
+
+---
+
 ## Posting the Report
 
 ### 1. Attach the HTML report to the work item

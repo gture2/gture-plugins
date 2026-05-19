@@ -77,6 +77,26 @@ Store `PLATFORM` and pass it through to every phase.
 
 ---
 
+## Post a "Web App Test in Progress" Comment
+
+Immediately after platform detection — before installing Playwright, launching the browser, or fetching the entry artefact in Phase 1 — post a comment on the entry artefact so the author knows the test run has started. **Browser installation and execution can take several minutes**; the starting comment closes the silence gap.
+
+Use the platform-appropriate method:
+
+- **GitHub:** see `providers/github.md` — Posting the "Test in Progress" comment section
+- **Azure DevOps:** see `providers/azure-devops.md` — Posting the Starting Comment section
+- **Unknown platform:** skip — no API available
+
+Target the comment to the entry artefact:
+
+- `ENTRY_TYPE == pr` → comment on the PR (`ENTRY_ID`)
+- `ENTRY_TYPE == issue` → comment on the GitHub issue (`ENTRY_ID`)
+- `ENTRY_TYPE == wi` → comment on the Azure DevOps work item (`ENTRY_ID`)
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the run.
+
+---
+
 ## Phase 1 — Gather Test Context
 
 Read and follow `skills/gather-test-context/SKILL.md`.

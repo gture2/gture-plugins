@@ -47,7 +47,7 @@ Store: `ENTRY_TYPE`, `ENTRY_ID`, `SKIP_PERF`, `SKIP_A11Y`.
 
 ## Step 1: Detect Platform + Gather Git Context
 
-If entry type is `wi`, skip this step (work item analysis fetches context via Azure DevOps REST API in Step 3; no repository is required). For `pr` or `issue` entry types, run the following **single Bash script** to collect all git context and detect the platform in one shot:
+If entry type is `wi`, skip this step (work item analysis fetches context via Azure DevOps REST API in Step 4; no repository is required). For `pr` or `issue` entry types, run the following **single Bash script** to collect all git context and detect the platform in one shot:
 
 ```bash
 BASE=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||' || echo "main")
@@ -91,7 +91,29 @@ Validate entry type compatibility:
 
 ---
 
-## Step 2: Pre-Compute Codebase Fingerprint
+## Step 2: Post an "Analysis in Progress" Comment
+
+Immediately after platform detection in Step 1, post a comment on the entry artefact (PR, issue, or work item) so the author knows the impact analysis has started. **Do not run any further indexing, fingerprinting, or codebase search before this step** — the comment must land within the first 3 tool calls.
+
+Use the platform-appropriate method:
+
+- **GitHub:** see `providers/github.md` — Posting the "Analysis in Progress" comment section
+- **Azure DevOps:** see `providers/azure-devops.md` — Posting the Starting Comment section
+- **Generic:** skip — no API available
+
+Target the comment to the entry artefact:
+
+- `ENTRY_TYPE == pr` → comment on the PR (`ENTRY_ID`)
+- `ENTRY_TYPE == issue` → comment on the GitHub issue (`ENTRY_ID`)
+- `ENTRY_TYPE == wi` → comment on the Azure DevOps work item (`ENTRY_ID`)
+
+If `ENTRY_ID` is missing (no-argument invocation), resolve it from the current branch using a CLI lookup (`gh pr list --head` on GitHub, `pullrequests?searchCriteria.sourceRefName=...` on Azure DevOps) first.
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the analysis.
+
+---
+
+## Step 3: Pre-Compute Codebase Fingerprint
 
 If entry type is `wi`, skip this step (no repository available). For `pr` or `issue` entry types, run this **single Bash script** to pre-fetch shared context for all sub-agents:
 
@@ -122,7 +144,7 @@ Pass this fingerprint to all sub-agents. It is a **starting-point hint, not an e
 
 ---
 
-## Step 3: Resolve Entry Point + Discover Linked Context
+## Step 4: Resolve Entry Point + Discover Linked Context
 
 ### If `ENTRY_TYPE == pr`
 
@@ -221,7 +243,7 @@ Use Grep to correlate docs with domain terms from the work item title and change
 
 ---
 
-## Step 4: Trivial PR Fast-Path Check
+## Step 5: Trivial PR Fast-Path Check
 
 A PR is **trivial** if **all** changed files match these patterns AND total changed lines < 50:
 - Docs only: `*.md`, `*.txt`, `*.rst`, `*.adoc`
@@ -232,11 +254,11 @@ A PR is **trivial** if **all** changed files match these patterns AND total chan
 
 **If trivial:** Launch only `change-analyst` + `risk-assessor` in Phase 1 (skip `dependency-tracer`, `feature-mapper`, `requirement-collector`). Label the report `[Fast-path analysis — trivial change]`.
 
-**If non-trivial:** Launch all Phase 1 agents as described in Step 5.
+**If non-trivial:** Launch all Phase 1 agents as described in Step 7.
 
 ---
 
-## Step 5: Synthesize Scope
+## Step 6: Synthesize Scope
 
 Before dispatching sub-agents, summarize:
 - What was requested (ACs or repro steps)
@@ -254,7 +276,7 @@ Pass this synthesis to each sub-agent — they do not re-fetch.
 
 ---
 
-## Step 6: Orchestrate Sub-Agents
+## Step 7: Orchestrate Sub-Agents
 
 ### Phase 1 (parallel)
 
@@ -289,7 +311,7 @@ After Phase 2 completes, launch:
 
 ---
 
-## Step 7: Review and Write Report
+## Step 8: Review and Write Report
 
 Review the `report-writer` output for:
 - All 14 sections present (or deliberately omitted with a reason)
@@ -306,7 +328,7 @@ where `{entry-id}` is the PR number, issue number, work item ID, or branch name.
 
 ---
 
-## Step 8: Deliver Report
+## Step 9: Deliver Report
 
 Read and follow the appropriate provider file based on the detected platform:
 

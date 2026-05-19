@@ -10,6 +10,23 @@ Alternatively, the `gh` CLI can be used as a fallback if MCP is unavailable.
 
 ---
 
+## Posting the "Analysis in Progress" Comment
+
+Post a single starting comment on the PR immediately after platform detection so the author knows the impact analysis has started and that it can take a few minutes to complete.
+
+```bash
+gh pr comment <pr-number> --body "$(cat <<'EOF'
+🧪 **Impact analysis in progress**
+
+I'm running impact analysis covering change scope, dependency tracing, feature mapping, and risk assessment. The full QA-focused impact report will be posted as a comment when complete — this may take a few minutes.
+EOF
+)"
+```
+
+If posting fails, output a single warning line and continue — do not stop the analysis.
+
+---
+
 ## Posting the Impact Report
 
 The impact analysis report is posted as a **PR comment** (not a review), since it is informational for QA rather than a code review verdict. If the PR body links to a GitHub issue, a condensed summary is also posted to that issue.

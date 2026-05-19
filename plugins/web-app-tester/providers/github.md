@@ -75,6 +75,34 @@ gh pr list --search "${ISSUE_NUMBER} in:body" --state all \
 
 ---
 
+## Posting the "Test in Progress" Comment
+
+Post a single starting comment on the entry artefact immediately after platform detection so the author knows the web app test run has started and that it can take several minutes (Playwright install + browser session) to complete.
+
+**PR:**
+```bash
+gh pr comment ${PR_NUMBER} --body "$(cat <<'EOF'
+🤖 **Web app test in progress**
+
+I'm installing Playwright if needed, launching a browser session, and executing the test plan against the deployed app. The full test execution report will be posted as a comment when complete — this may take a few minutes.
+EOF
+)"
+```
+
+**Issue:**
+```bash
+gh issue comment ${ISSUE_NUMBER} --body "$(cat <<'EOF'
+🤖 **Web app test in progress**
+
+I'm installing Playwright if needed, launching a browser session, and executing the test plan against the deployed app. The full test execution report will be posted as a comment when complete — this may take a few minutes.
+EOF
+)"
+```
+
+If posting fails, output a single warning line and continue — do not stop the run.
+
+---
+
 ## Posting the "No URL Found" Comment
 
 **PR:**

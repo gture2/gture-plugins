@@ -158,6 +158,34 @@ Store the first active (non-abandoned) linked PR ID as `LINKED_PR_ID` — it is 
 
 ---
 
+## Posting the Starting Comment
+
+Post a starting comment on the entry artefact immediately after platform detection so the author knows the web app test run has started and that it can take several minutes (Playwright install + browser session) to complete.
+
+**PR entry — post on the PR thread:**
+
+```bash
+curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  "${API_BASE}/_apis/git/repositories/${AZURE_REPO}/pullrequests/${PR_ID}/threads?api-version=7.1" \
+  -d '{"comments":[{"content":"🤖 **Web app test in progress**\n\nInstalling Playwright if needed, launching a browser session, and executing the test plan against the deployed app. The full test execution report will be posted as a comment when complete — this may take a few minutes.","commentType":1}],"status":"active","properties":{"Microsoft.TeamFoundation.Discussion.SupportsMarkdown":1}}'
+```
+
+**Work item entry — post on the work item discussion:**
+
+```bash
+curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  "${API_BASE}/_apis/wit/workitems/${WORK_ITEM_ID}/comments?format=markdown&api-version=7.1-preview.4" \
+  -d '{"text":"🤖 **Web app test in progress**\n\nInstalling Playwright if needed, launching a browser session, and executing the test plan against the deployed app. The full test execution report will be posted as a comment when complete — this may take a few minutes."}'
+```
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the run.
+
+---
+
 ## Posting the "No URL Found" Comment
 
 **PR entry — post on the PR thread:**

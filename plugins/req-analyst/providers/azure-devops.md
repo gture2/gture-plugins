@@ -87,6 +87,24 @@ curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
 
 ---
 
+## Posting the Starting Comment
+
+Post a starting comment on the work item discussion immediately after fetching it so the author knows the elaboration has started and that it can take a few minutes to complete.
+
+Azure DevOps must be told that comment bodies are Markdown via the `format=markdown` query string.
+
+```bash
+curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  "https://dev.azure.com/${AZURE_ORG}/${AZURE_PROJECT}/_apis/wit/workitems/${WORK_ITEM_ID}/comments?format=markdown&api-version=7.1-preview.4" \
+  -d '{"text":"📋 **Requirement elaboration in progress**\n\nSurrounding this item with the context a senior analyst would bring — intent, user journey, personas & adoption, domain & competitive insight, fit with existing requirements, and open questions. The elaboration will be posted as a series of comments when complete — this may take a few minutes."}'
+```
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the elaboration.
+
+---
+
 ## Posting the Elaboration
 
 The original work item description is **never modified**. All elaboration is posted as **separate comments** — one per lens.

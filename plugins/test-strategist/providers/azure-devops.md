@@ -187,6 +187,34 @@ curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
 
 ---
 
+## Posting the Starting Comment
+
+Post a starting comment on the entry artefact immediately after resolving it in Step 1 so the author knows the test strategy generation has started and that it can take a few minutes to complete.
+
+**If `ENTRY_TYPE == pr` (post on the PR thread):**
+
+```bash
+curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  "${API_BASE}/_apis/git/repositories/${AZURE_REPO}/pullrequests/${PR_ID}/threads?api-version=7.1" \
+  -d '{"comments":[{"content":"🧪 **Test strategy in progress**\n\nAnalysing the change set, mapping requirements, and generating a structured, business-readable test strategy. The full strategy will be posted as a series of comments when complete — this may take a few minutes.","commentType":1}],"status":"active","properties":{"Microsoft.TeamFoundation.Discussion.SupportsMarkdown":1}}'
+```
+
+**If `ENTRY_TYPE == wi` (post on the work item discussion):**
+
+```bash
+curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  "${API_BASE}/_apis/wit/workItems/${WORK_ITEM_ID}/comments?format=markdown&api-version=7.1-preview.4" \
+  -d '{"text":"🧪 **Test strategy in progress**\n\nAnalysing the change set, mapping requirements, and generating a structured, business-readable test strategy. The full strategy will be posted as a series of comments when complete — this may take a few minutes."}'
+```
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the run.
+
+---
+
 ## Posting the Comment Series
 
 The `test-guide-writer` agent has produced a directory of Markdown files plus an `index.json` describing the planned series. Read the index, then post each comment in order, capture URLs, and finally PATCH Comment 1 to back-fill the Table of Contents.

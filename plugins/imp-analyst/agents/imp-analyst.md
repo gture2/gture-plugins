@@ -65,11 +65,25 @@ From `REMOTE_URL`, determine the platform:
 - Contains `bitbucket.org` → **Bitbucket**
 - Anything else → **Generic** (report only, no inline posting)
 
-Store the detected platform — it determines how the report is posted in Step 5.
+Store the detected platform — it determines how the report is posted in Step 8.
 
 Use `git show HEAD:<filepath>` or the `Read` tool to read the full content of any file that requires deeper analysis beyond the patch.
 
-### 2. Pre-Compute Codebase Fingerprint
+### 2. Post an "Analysis in Progress" Comment
+
+Immediately after platform detection in Step 1, post a comment so the PR author knows the impact analysis has started. **Do not run any further indexing, fingerprinting, or codebase search before this step** — the comment must land within the first 3 tool calls.
+
+Use the platform-appropriate method:
+
+- **GitHub:** see `providers/github.md` — Posting the "Analysis in Progress" comment section
+- **Azure DevOps:** see `providers/azure-devops.md` — Posting the Starting Comment section
+- **Bitbucket / Generic:** skip — no API available
+
+Resolve the PR number from the invocation argument first; only fall back to a CLI lookup (`gh pr list --head` on GitHub, `pullrequests?searchCriteria.sourceRefName=...` on Azure DevOps) if it was not provided.
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the analysis.
+
+### 3. Pre-Compute Codebase Fingerprint
 
 Run this **single Bash script** to pre-fetch shared context for all sub-agents (avoids each agent independently re-discovering the same information):
 
@@ -98,7 +112,7 @@ echo "$CHANGED" | xargs -I{} basename {} | sed 's/\.[^.]*$//'
 
 Capture the output — pass it to all sub-agents as **pre-fetched context** so they don't re-run these searches. This fingerprint is a **starting-point hint, not an exhaustive list** — sub-agents should treat it as a head start and use their own Grep budget to verify or extend it when needed.
 
-### 3. Trivial PR Fast-Path Check
+### 4. Trivial PR Fast-Path Check
 
 Before launching all four agents, check whether this is a trivial PR. A PR is **trivial** if **all** changed files match these patterns AND total changed lines < 50:
 - Docs only: `*.md`, `*.txt`, `*.rst`, `*.adoc`
@@ -109,18 +123,18 @@ Before launching all four agents, check whether this is a trivial PR. A PR is **
 
 **If trivial:** Launch only `change-scope-analyzer` + `risk-assessor` in parallel (skip `dependency-tracer` and `feature-mapper`). Label the report header with `[Fast-path analysis — trivial change]` and default overall risk to `🟢 LOW` (risk-assessor may still upgrade it if warranted).
 
-**If non-trivial:** Launch all four agents in parallel as described in Step 4.
+**If non-trivial:** Launch all four agents in parallel as described in Step 5.
 
-### 4. Orchestrate Specialized Analyses
+### 5. Orchestrate Specialized Analyses
 
-Pass the git context from Step 1 **and** the pre-fetched fingerprint from Step 2 to each sub-agent. Launch all four analysts in parallel using the Agent tool (or the two fast-path agents if Step 3 determined trivial):
+Pass the git context from Step 1 **and** the pre-fetched fingerprint from Step 3 to each sub-agent. Launch all four analysts in parallel using the Agent tool (or the two fast-path agents if Step 4 determined trivial):
 
 - **change-scope-analyzer**: Categorizes all changes — new code, modified logic, deletions, config, schema, migrations
 - **dependency-tracer**: Traces callers, callees, data flows, and transitive dependencies from each changed file
 - **feature-mapper**: Maps changed code paths to user-facing features, routes, API endpoints, and business workflows
 - **risk-assessor**: Rates risk per impacted area, assesses test coverage, regression likelihood, and recommends test priorities
 
-### 5. Compile Impact Report (after all agents complete)
+### 6. Compile Impact Report (after all agents complete)
 
 Aggregate all findings into a structured QA-focused impact report:
 
@@ -218,7 +232,7 @@ Aggregate all findings into a structured QA-focused impact report:
 
 ---
 
-## 6. Determine Overall Risk Level (or inherit from fast-path default)
+## 7. Determine Overall Risk Level (or inherit from fast-path default)
 
 Apply the following criteria:
 
@@ -230,7 +244,7 @@ Apply the following criteria:
 
 ---
 
-## 7. Post Report
+## 8. Post Report
 
 Post the compiled report to the platform detected in Step 1 immediately without waiting for user input.
 

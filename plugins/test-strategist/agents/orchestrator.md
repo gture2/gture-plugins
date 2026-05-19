@@ -148,11 +148,31 @@ gh api "repos/{owner}/{repo}/issues/${ENTRY_ID}/timeline" --paginate \
 gh pr list --search "${ENTRY_ID} in:body" --state all --json number,title,state,headRefName,url,body --limit 20
 ```
 
-For each discovered PR, fetch its diff (see Step 2).
+For each discovered PR, fetch its diff (see Step 3).
 
 ---
 
-## 2. Gather Code Changes from Linked PRs
+## 2. Post a "Test Strategy in Progress" Comment
+
+Immediately after resolving the entry point in Step 1, post a comment on the entry artefact (PR, issue, or work item) so the author knows the test strategy generation has started. **Do not gather diffs, enrich documentation, or launch sub-agents before this step** — the comment must land within the first 3 tool calls.
+
+Use the platform-appropriate method:
+
+- **GitHub:** see `providers/github.md` — Posting the "Test Strategy in Progress" comment section
+- **Azure DevOps:** see `providers/azure-devops.md` — Posting the Starting Comment section
+- **Generic:** skip — no API available
+
+Target the comment to the entry artefact:
+
+- `ENTRY_TYPE == pr` → comment on the PR (`ENTRY_ID`)
+- `ENTRY_TYPE == issue` → comment on the GitHub issue (`ENTRY_ID`)
+- `ENTRY_TYPE == wi` → comment on the Azure DevOps work item (`ENTRY_ID`) — or on the linked PR thread when the work item has no discussion target
+
+If posting the starting comment fails, output a single warning line and continue — do not stop the run.
+
+---
+
+## 3. Gather Code Changes from Linked PRs
 
 For every pull request discovered in Step 1, collect the full diff, changed files, and commit log.
 
@@ -189,7 +209,7 @@ Use `Read` or `git show` to read full content of any file requiring deeper analy
 
 ---
 
-## 3. Enrich with Repository Documentation
+## 4. Enrich with Repository Documentation
 
 Scan for PRDs, specs, and design notes that the work item references. Common paths:
 
@@ -230,7 +250,7 @@ find . -not -path './.git/*' -type f \
 
 ---
 
-## 4. Synthesize Scope Before Dispatching Sub-Agents
+## 5. Synthesize Scope Before Dispatching Sub-Agents
 
 Before launching sub-agents, summarize:
 
@@ -247,11 +267,11 @@ Identify:
 - Critical surfaces (auth, payments, data migrations, public APIs, PII).
 - Scope (small/medium/large).
 
-Pass this synthesis to each sub-agent in Step 5 — they do not re-fetch.
+Pass this synthesis to each sub-agent in Step 6 — they do not re-fetch.
 
 ---
 
-## 5. Orchestrate Specialist Analysis
+## 6. Orchestrate Specialist Analysis
 
 Launch Phase 1 agents in **parallel** via the `Agent` tool, passing the gathered context:
 
@@ -277,7 +297,7 @@ Capture this path — you'll pass it to the platform provider in the next step.
 
 ---
 
-## 6. Validate the Generated Comment Series
+## 7. Validate the Generated Comment Series
 
 Before posting, sanity-check the output of `test-guide-writer`:
 
@@ -293,7 +313,7 @@ Do **not** edit the comment files yourself — re-dispatch `test-guide-writer` i
 
 ---
 
-## 7. Post the Comment Series
+## 8. Post the Comment Series
 
 Delivery depends on the detected platform — read and follow the appropriate provider file. The provider file owns the platform-specific posting flow (URL capture, two-pass TOC back-fill, label / tag application).
 
@@ -301,11 +321,11 @@ Delivery depends on the detected platform — read and follow the appropriate pr
 - **Azure DevOps** → `providers/azure-devops.md` — post the comment series on the work item discussion (or on the PR thread if entry was a PR with no linked work item). For work-item entries that are also linked to a PR, post a single pointer thread on the PR linking back to the work item discussion.
 - **Generic** → `providers/generic.md` — no posting; the comment files in the working directory are the deliverable. Optionally also write a single combined `impact-analysis-report.md` to the same directory for offline review.
 
-Pass the working directory path (from Step 5) to the provider so it knows where to read the comment files and `index.json` from.
+Pass the working directory path (from Step 6) to the provider so it knows where to read the comment files and `index.json` from.
 
 ---
 
-## 8. Final Output
+## 9. Final Output
 
 After delivery, output a single confirmation line:
 

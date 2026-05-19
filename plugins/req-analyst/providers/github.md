@@ -55,6 +55,23 @@ gh issue list --search "${KEYWORD}" --json number,title,state --limit 10
 
 ---
 
+## Posting the "Elaboration in Progress" Comment
+
+Post a single starting comment on the issue immediately after fetching it so the author knows the elaboration has started and that it can take a few minutes to complete.
+
+```bash
+gh issue comment ${ISSUE_NUMBER} --body "$(cat <<'EOF'
+📋 **Requirement elaboration in progress**
+
+I'm surrounding this item with the context a senior analyst would bring — intent, user journey, personas & adoption, domain & competitive insight, fit with existing requirements, and open questions. The elaboration will be posted as a series of comments when complete — this may take a few minutes.
+EOF
+)"
+```
+
+If posting fails, output a single warning line and continue — do not stop the elaboration.
+
+---
+
 ## Posting the Elaboration
 
 The original issue body is **never modified**. All elaboration is posted as **separate comments** — one per lens. This preserves the author's description and creates a reviewable discussion thread.
