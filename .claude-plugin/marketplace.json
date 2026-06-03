@@ -132,5 +132,21 @@
       "keywords": ["documentation", "docs", "doc-sync", "readme", "api-docs", "changelog", "pull-request", "automation", "github", "azure-devops"],
       "license": "MIT"
     }
+  ,
+    {
+      "name": "pentest-agent",
+      "source": "./plugins/pentest-agent",
+      "description": "Authorized penetration testing plugin. Runs OWASP Top 10 web probes, dependency CVE scanning, secrets/credential detection, and network port scanning against a user-specified target URL. Requires explicit --authorized flag. Produces a local HTML and Markdown report.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Xianix",
+        "email": "hello@xianix.com"
+      },
+      "homepage": "https://xianix.com",
+      "repository": "https://github.com/xianix-team/plugins-official",
+      "category": "security",
+      "keywords": ["pentest", "security", "owasp", "vulnerability-scanning", "sca", "secrets-detection", "network-scan", "penetration-testing"],
+      "license": "MIT"
+    }
   ]
 }
