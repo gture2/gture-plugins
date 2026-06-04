@@ -216,8 +216,7 @@ Pick one signal as a **triage hint** for the team. The signal is secondary; the 
 1. **Elaboration Summary** — short overview, readiness signal, key takeaways
 2. **Fit with Existing Requirements** — overlaps / dependencies / contradictions / gaps against existing PRDs, specs, ADRs, feature briefs (skip if the repo has no requirement documents)
 3. **Context** — the bullet points returned by context-analyst, under the heading `## Context`. No sub-sections — just the bullets as-is.
-4. **Open Questions & Gaps** — Block 1 from gap-risk-analyst, framed as prompts
-5. **Suggested Follow-up Issue** — Block 2 from gap-risk-analyst. Post only if the agent produced this block (i.e. there are CRITICAL or WARNING findings). Use the heading `## Suggested Follow-up Issue` and include the full draft title and body so the team can create it with one click. Add a note: *"This is a draft — create it if the team agrees these questions need resolving before pickup."*
+4. **Open Questions & Gaps** — from gap-risk-analyst, framed as prompts
 
 Each comment is self-contained with a clear heading (e.g. `## 🔍 Intent & User Context`).
 

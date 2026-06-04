@@ -63,7 +63,7 @@ Use all of these. Cross-reference: does the stated need match the underlying int
 
 ## Output Format
 
-Produce **two blocks** in your response — the gaps analysis and the follow-up issue draft. Both are used by the orchestrator.
+Produce one block in your response — the gaps analysis. The orchestrator uses this directly.
 
 ### Block 1 — Open Questions & Gaps
 
@@ -87,36 +87,6 @@ Produce **two blocks** in your response — the gaps analysis and the follow-up 
 ### Assumptions to Validate
 - [Conditions assumed true — worth confirming with the product owner]
 ```
-
-### Block 2 — Suggested Follow-up Issue Draft
-
-Only produce this block if there are one or more CRITICAL or WARNING findings. If all findings are INFO-level, skip it entirely.
-
-Draft a single follow-up issue that captures the unresolved gaps as concrete next steps for the team. This is posted as a comment on the original issue — the team decides whether to create it.
-
-```
-## Suggested Follow-up Issue
-
-**Title:** Clarify open questions before pickup: [original issue title]
-
-**Type:** Spike
-
-**Body:**
-Context: This follow-up was surfaced during elaboration of #[original issue number].
-The items below need a decision before the team picks up the original story to avoid ambiguity mid-development.
-
-### Questions to resolve
-- [ ] [CRITICAL/WARNING gap 1 — phrased as a concrete decision]
-- [ ] [CRITICAL/WARNING gap 2]
-
-### Acceptance criteria
-- All items above are answered and recorded as comments on #[original issue number]
-- Any decisions that change the scope of #[original issue number] are reflected in an updated description
-
-**Labels/Tags:** `needs-clarification`, `spike`
-```
-
-Keep the draft focused: only include CRITICAL and WARNING findings, not INFO. Do not pad it. If there are no actionable unresolved gaps, omit Block 2 entirely.
 
 ---
 

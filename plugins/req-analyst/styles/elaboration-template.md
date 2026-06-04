@@ -87,25 +87,3 @@ The plugin is a **thinking partner**, not a gatekeeper. Frame everything as obse
 
 *(Skip subsections with no findings.)*
 
----
-
-### Suggested Follow-up Issue
-
-> Only present when there are CRITICAL or WARNING findings. This is a draft the team can create with one click — not an automatic action.
-
-**Title:** Clarify open questions before pickup: [original issue title]
-
-**Type:** Spike
-
-**Body:**
-Context: This follow-up was surfaced during elaboration of #[original issue number].
-The items below need a decision before the team picks up the original story.
-
-- [ ] [CRITICAL/WARNING question 1]
-- [ ] [CRITICAL/WARNING question 2]
-
-**Labels/Tags:** `needs-clarification`, `spike`
-
-*This is a draft — create it if the team agrees these questions need resolving before pickup.*
-
-*(Skip entirely if all findings are INFO-level.)*
