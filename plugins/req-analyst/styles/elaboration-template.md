@@ -53,7 +53,7 @@ The plugin is a **thinking partner**, not a gatekeeper. Frame everything as obse
 
 ### Context
 
-> Compact signal from journey, persona, and domain lenses. Each sub-section is 2–5 bullets from the respective analyst. Skip any sub-section with no findings.
+> Compact signal from journey, persona, and domain lenses. Each sub-section is 2–3 bullets from the respective analyst. Skip any sub-section with no findings.
 
 #### Journey
 [Bullet points from journey-mapper]

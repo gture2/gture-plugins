@@ -89,8 +89,9 @@ Post each lens as its own comment using `gh issue comment`. Each comment must ha
 | 5 | Personas & Adoption | `## 👥 Personas & Adoption` | persona-analyst |
 | 6 | Domain & Competitive Context | `## 🏢 Domain & Competitive Context` | domain-analyst |
 | 7 | Open Questions & Gaps | `## ❓ Open Questions & Gaps` | gap-risk-analyst |
+| 8 | Refined Requirement | `## 📝 Refined Requirement` | Orchestrator (Step 10 — always last) |
 
-**Skip** any comment whose source produced no meaningful findings (e.g. a narrow bug fix may not need Journey, Personas, or Fit).
+**Skip** any comment (1–7) whose source produced no meaningful findings (e.g. a narrow bug fix may not need Journey, Personas, or Fit). Comment 8 (Refined Requirement) is **always posted** — it is the actionable output of the full analysis.
 
 ### Posting each comment
 

@@ -66,6 +66,11 @@ Readiness signal: GROOMED | NEEDS CLARIFICATION | NEEDS DECOMPOSITION
 
 ## ❓ Open Questions & Gaps
 <gap-risk-analyst output — framed as prompts for the team>
+
+---
+
+## 📝 Refined Requirement
+<structured requirement compiled by the orchestrator in Step 10 — user intent, functional requirements, non-functional requirements, user journey, and acceptance criteria; TODO markers for all assumed values>
 ```
 
 ---
@@ -75,7 +80,7 @@ Readiness signal: GROOMED | NEEDS CLARIFICATION | NEEDS DECOMPOSITION
 On completion:
 
 ```
-Elaboration complete: <signal> — report written to requirement-elaboration-report.md
+Elaboration complete: <signal> — report written to requirement-elaboration-report.md — refined requirement included
 ```
 
 ---

@@ -169,20 +169,17 @@ Before launching sub-agents:
 - Estimate complexity (small/medium/large)
 - Note any existing constraints or context in the body
 
-### 5. Run the Four Phase 1 Analysts (in parallel)
+### 5. Run the Phase 1 Analyst
 
-Pass each sub-agent: the item content (title, body, comments), related items, **and** the documentation summary + Fit note from Step 3. Launch all four with the `Agent` tool in parallel.
+Pass the sub-agent: the item content (title, body, comments), related items, **and** the documentation summary + Fit note from Step 3.
 
 | Agent | Lens it brings |
 |---|---|
-| **intent-analyst** | The "why" behind the ask — underlying user need, success definition, current workaround, decision points |
-| **domain-analyst** | Domain knowledge, terminology, regulations, industry conventions, and how comparable products / competitors approach the same problem (uses web research) |
-| **journey-mapper** | End-to-end user workflow this change participates in — upstream triggers, downstream consequences, **usability touchpoints, friction risks**, journey gaps |
-| **persona-analyst** | Affected personas, where their goals diverge, persona-specific edge cases, **adoption considerations** specific to each (onboarding, migration, change management, success signals) |
+| **context-analyst** | Intent (the "why"), domain knowledge, terminology, regulations, competitive patterns, user journey, friction risks, affected personas, and adoption considerations — returned as 5–8 bullets |
 
 ### 6. Run the Phase 2 Analyst
 
-After Phase 1 completes, pass Phase 1 outputs alongside the issue content and documentation summary:
+After Phase 1 completes, pass the context-analyst output alongside the issue content and documentation summary:
 
 - **gap-risk-analyst** — open questions, assumptions worth validating, acceptance criteria worth tightening, edge cases, dependencies. **Framing: prompts for the team, not blockers.**
 
@@ -218,10 +215,9 @@ Pick one signal as a **triage hint** for the team. The signal is secondary; the 
 
 1. **Elaboration Summary** — short overview, readiness signal, key takeaways
 2. **Fit with Existing Requirements** — overlaps / dependencies / contradictions / gaps against existing PRDs, specs, ADRs, feature briefs (skip if the repo has no requirement documents)
-3. **Intent & User Context** — from intent-analyst
-4. **Context** — a single comment combining the compact bullet outputs from journey-mapper, persona-analyst, and domain-analyst. Use the heading `## Context` and three labelled sub-sections (`### Journey`, `### Personas`, `### Domain`), each containing only the bullet points those agents returned. Skip any sub-section whose agent returned no findings.
-5. **Open Questions & Gaps** — Block 1 from gap-risk-analyst, framed as prompts
-6. **Suggested Follow-up Issue** — Block 2 from gap-risk-analyst. Post only if the agent produced this block (i.e. there are CRITICAL or WARNING findings). Use the heading `## Suggested Follow-up Issue` and include the full draft title and body so the team can create it with one click. Add a note: *"This is a draft — create it if the team agrees these questions need resolving before pickup."*
+3. **Context** — the bullet points returned by context-analyst, under the heading `## Context`. No sub-sections — just the bullets as-is.
+4. **Open Questions & Gaps** — Block 1 from gap-risk-analyst, framed as prompts
+5. **Suggested Follow-up Issue** — Block 2 from gap-risk-analyst. Post only if the agent produced this block (i.e. there are CRITICAL or WARNING findings). Use the heading `## Suggested Follow-up Issue` and include the full draft title and body so the team can create it with one click. Add a note: *"This is a draft — create it if the team agrees these questions need resolving before pickup."*
 
 Each comment is self-contained with a clear heading (e.g. `## 🔍 Intent & User Context`).
 
@@ -233,8 +229,46 @@ Follow the platform-specific posting instructions:
 
 After posting, apply the readiness signal label/tag, then post any unresolved questions as individual comments tagging the relevant person.
 
+---
+
+### 10. Post the Structured Requirement Comment
+
+After all elaboration comments are posted, compile and post one final comment: a **structured requirement specification** derived from the original issue and enriched by the analysis. This is the artefact the team can use directly as a refined backlog item.
+
+Read `styles/requirement-template.md` and follow its template exactly.
+
+**How to fill the template:**
+
+Use the outputs from all previous steps to populate each section:
+
+| Section | Primary source |
+|---|---|
+| **User Intent** | context-analyst Personas + Intent bullets; issue title/body |
+| **Functional Requirements** | Issue body (explicit statements); context-analyst Intent/Success bullets (implied) |
+| **Non-Functional Requirements** | gap-risk-analyst Dependencies + domain rules; context-analyst Domain bullet |
+| **User Journey** | context-analyst Journey bullet; gap-risk-analyst edge cases |
+| **Acceptance Criteria** | gap-risk-analyst gaps; issue body if ACs are present; context-analyst Friction bullet |
+
+**Assumption handling:**
+
+When a section cannot be populated from evidence in the issue or analysis, make the most reasonable assumption from available context. For every assumed value:
+- Fill the field with the assumption (so the comment is complete and usable, not full of blanks)
+- Append a `> **TODO:**` blockquote immediately below the field explaining what was assumed and why, and what the human needs to confirm
+
+Mark the confidence column in FR/NFR tables as **Assumed** for any row derived from inference rather than explicit statements.
+
+**Never leave a TODO vague.** State the assumption concretely — "Assumed persona is internal ops team member based on the issue label `ops`" is useful; "Persona unknown" is not.
+
+Post this comment last, after all other elaboration comments, using the platform posting method:
+
+- **GitHub:** `gh issue comment ${ISSUE_NUMBER}` with heading `## 📝 Refined Requirement`
+- **Azure DevOps:** REST API POST to the work item comments endpoint (see `providers/azure-devops.md`)
+- **Generic / plain text:** Append as the final section of `requirement-elaboration-report.md` (see `providers/generic.md`)
+
+---
+
 Output on completion:
 
 ```
-Elaboration posted on issue #<number>: <signal> — <N> comments — <N> open questions
+Elaboration posted on issue #<number>: <signal> — <N> comments — <N> open questions — refined requirement posted
 ```
