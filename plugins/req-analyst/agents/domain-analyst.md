@@ -67,32 +67,14 @@ Not performance specs — experience expectations users walk in with:
 
 ## Output Format
 
+Return 3–5 bullet points only. No headings, no sub-sections, no tables.
+
 ```
-## Domain & Competitive Context
-
-### Concepts & Terminology
-- **[Concept]:** [What it means to users; critical vs optional]
-- **[Term in the issue] vs [standard domain term]:** [Note where vocabulary diverges]
-
-### Regulations / Compliance *(only if relevant)*
-- **[Rule]:** [What it requires for this kind of feature]
-
-### Business Rules & Exceptions
-- **Standard:** [Normal behavior]
-- **Exceptions:** ["except when…"]
-- **Overrides:** [Where users can override]
-- **Worth validating with the team:** [Tribal knowledge, policy vs practice]
-
-### User Expectations
-- **Fast enough:** [Thresholds users carry in]
-- **Trustworthy:** [What builds/breaks trust]
-- **Simple:** [Acceptable complexity]
-
-### Comparable Products / Competitors
-- **[Product / URL]:** [How they approach this; what users have come to expect]
-- **Industry patterns:** [Conventions]
-- **Differentiation:** [What we could do better]
-- **Pitfalls to avoid:** [Common failures]
+- **Domain:** [Key concept or terminology worth clarifying; critical vs optional distinction if relevant]
+- **Rules:** [The most important business rule or exception — "except when…" if applicable]
+- **Compliance:** [Regulation or constraint — only if genuinely relevant; omit if not]
+- **Competitors:** [One concrete note on how comparable products approach this; pitfall to avoid — omit if web search yields nothing]
+- **Expectation:** [The non-functional user expectation that matters most here — speed, trust, or simplicity]
 ```
 
-Be concise. Prioritize actionable insights. Skip the competitive section entirely if web search yields nothing relevant. Only include sections with actual findings.
+Include only bullets with real findings. 3 bullets is fine. Never write "None identified."

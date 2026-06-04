@@ -51,52 +51,18 @@ The plugin is a **thinking partner**, not a gatekeeper. Frame everything as obse
 
 ---
 
-### User Journey
+### Context
 
-> Where this requirement fits in the end-to-end user journey, with usability touchpoints and friction risks. Skip if the requirement is too narrow for meaningful journey context.
+> Compact signal from journey, persona, and domain lenses. Each sub-section is 2–5 bullets from the respective analyst. Skip any sub-section with no findings.
 
-| # | Stage | User Goal | Touchpoint | Emotion | Issues |
-|---|-------|-----------|------------|---------|--------|
-| 1 | [Stage] | [Goal] | [Where] | [State] | #[refs] |
-| **2** | **[This requirement]** | **[Goal]** | **[Where]** | **[State]** | **#[this]** |
-| 3 | [Stage] | [Goal] | [Where] | [State] | #[refs] |
+#### Journey
+[Bullet points from journey-mapper]
 
-- **Upstream trigger / downstream consequence:** [What flows in / out]
-- **Usability touchpoints:** [Accessibility, discoverability, error states, empty states, "what happens when…"]
-- **Friction risks:** [Where the user is most likely to get stuck or frustrated]
-- **Journey gaps:** [Steps with no corresponding issue or feature]
-- **Moments that matter:** [High-stakes, trust-building, or delight opportunities]
+#### Personas
+[Bullet points from persona-analyst]
 
----
-
-### Personas & Adoption
-
-> Distinct user types affected, where their goals diverge, and what adoption looks like for each. Skip persona table if a single persona is clearly the only audience; skip adoption table if the requirement is trivial to adopt.
-
-| Persona | Role | Frequency | Primary Goal |
-|---------|------|-----------|--------------|
-| [Label] | [Who] | [How often] | [Goal] |
-
-- **Conflicts:** [Where personas' needs diverge; suggested resolution]
-- **Underserved:** [User types not mentioned but likely affected]
-
-| Persona | Onboarding | Migration from today | Documentation / change-management | Success signal |
-|---|---|---|---|---|
-| [Label] | [What they need first time] | [Path from current workflow] | [What would smooth the rollout] | [How we'd know they're using it] |
-
----
-
-### Domain & Competitive Context
-
-> Domain knowledge, terminology, regulations, business rules, and how comparable products solve this — only include what's relevant.
-
-- **Concepts & terminology:** [What terms/data mean to users — semantic, not structural]
-- **Regulations / compliance:** [Only if genuinely relevant]
-- **Business rules:** [Standard behavior; exceptions ("except when…"); overrides]
-- **User expectations:** [Fast enough, trustworthy, simple]
-- **Comparable products / competitors:** [How they approach this; patterns; differentiation opportunities; common pitfalls]
-
-*(Skip the competitive section if web search yields nothing relevant.)*
+#### Domain
+[Bullet points from domain-analyst]
 
 ---
 
@@ -120,3 +86,26 @@ The plugin is a **thinking partner**, not a gatekeeper. Frame everything as obse
 - **Assumptions to validate:** [Conditions assumed true — worth confirming with the product owner]
 
 *(Skip subsections with no findings.)*
+
+---
+
+### Suggested Follow-up Issue
+
+> Only present when there are CRITICAL or WARNING findings. This is a draft the team can create with one click — not an automatic action.
+
+**Title:** Clarify open questions before pickup: [original issue title]
+
+**Type:** Spike
+
+**Body:**
+Context: This follow-up was surfaced during elaboration of #[original issue number].
+The items below need a decision before the team picks up the original story.
+
+- [ ] [CRITICAL/WARNING question 1]
+- [ ] [CRITICAL/WARNING question 2]
+
+**Labels/Tags:** `needs-clarification`, `spike`
+
+*This is a draft — create it if the team agrees these questions need resolving before pickup.*
+
+*(Skip entirely if all findings are INFO-level.)*

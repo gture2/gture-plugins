@@ -82,41 +82,13 @@ For each persona, think through what adoption looks like:
 
 ## Output Format
 
+Return 2–4 bullet points only. No headings, no tables, no per-persona breakdowns.
+
 ```
-## Personas & Adoption
-
-### Identified Personas
-
-| Persona | Role | Frequency | Tech Comfort | Primary Goal |
-|---------|------|-----------|--------------|--------------|
-| [Label] | [Who] | [How often] | [Level] | [Goal] |
-
-### Persona Details
-
-#### [Persona 1: Label]
-- **Must-have:** [Essential needs]
-- **Mental model:** [How they think about this]
-- **Context:** [When/where/pressure]
-- **Edge cases:** [Persona-specific scenarios]
-
-#### [Persona 2: Label]
-- **Must-have:** [Essential needs]
-- **Mental model:** [How they think about this]
-- **Context:** [When/where/pressure]
-- **Edge cases:** [Persona-specific scenarios]
-
-### Conflicts & Resolution
-| Conflict | Persona A needs | Persona B needs | Suggested resolution |
-|----------|----------------|-----------------|---------------------|
-| [Tension] | [Need] | [Need] | [Strategy] |
-
-### Adoption Considerations
-| Persona | Onboarding | Migration from today | Documentation / change-management | Success signal |
-|---|---|---|---|---|
-| [Label] | [What they need first time] | [Path from current workflow] | [What would smooth the rollout] | [How we'd know they're using it] |
-
-### Underserved Personas
-- **[Persona]:** [Why they matter; what's missing for them]
+- **Personas:** [Who is affected — one line naming the distinct user types; omit if single obvious audience]
+- **Conflict:** [The most significant tension between user types and a suggested resolution — omit if no real conflict]
+- **Adoption:** [The one adoption consideration most likely to trip up rollout — migration pain, change management, or success signal]
+- **Underserved:** [A user type not mentioned in the issue but likely affected — omit if none]
 ```
 
-Be concise. Only identify personas genuinely relevant to this requirement — do not force-fit generic personas. If the requirement is narrow (e.g., a bug fix), fewer personas is correct, and the adoption table can be small or omitted.
+Include only bullets with real findings. 2 bullets is fine. Never write "None identified."
