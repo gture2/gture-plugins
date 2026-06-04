@@ -219,10 +219,9 @@ Pick one signal as a **triage hint** for the team. The signal is secondary; the 
 1. **Elaboration Summary** — short overview, readiness signal, key takeaways
 2. **Fit with Existing Requirements** — overlaps / dependencies / contradictions / gaps against existing PRDs, specs, ADRs, feature briefs (skip if the repo has no requirement documents)
 3. **Intent & User Context** — from intent-analyst
-4. **User Journey** — from journey-mapper, including usability touchpoints and friction risks (skip if not applicable)
-5. **Personas & Adoption** — from persona-analyst, including onboarding/migration/change-management considerations (skip if single-persona and adoption is trivial)
-6. **Domain & Competitive Context** — from domain-analyst
-7. **Open Questions & Gaps** — from gap-risk-analyst, framed as prompts
+4. **Context** — a single comment combining the compact bullet outputs from journey-mapper, persona-analyst, and domain-analyst. Use the heading `## Context` and three labelled sub-sections (`### Journey`, `### Personas`, `### Domain`), each containing only the bullet points those agents returned. Skip any sub-section whose agent returned no findings.
+5. **Open Questions & Gaps** — Block 1 from gap-risk-analyst, framed as prompts
+6. **Suggested Follow-up Issue** — Block 2 from gap-risk-analyst. Post only if the agent produced this block (i.e. there are CRITICAL or WARNING findings). Use the heading `## Suggested Follow-up Issue` and include the full draft title and body so the team can create it with one click. Add a note: *"This is a draft — create it if the team agrees these questions need resolving before pickup."*
 
 Each comment is self-contained with a clear heading (e.g. `## 🔍 Intent & User Context`).
 

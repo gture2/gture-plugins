@@ -83,39 +83,13 @@ For the stage(s) this requirement touches, surface:
 
 ## Output Format
 
+Return 2–4 bullet points only. No headings, no tables, no stage maps.
+
 ```
-## User Journey
-
-### Journey: [Name]
-**Upstream trigger:** [What starts this journey]
-**Downstream consequence:** [What flows from this; where output goes]
-
-### Stages
-
-| # | Stage | User Goal | Actions | Touchpoint | Emotion | Issues |
-|---|-------|-----------|---------|------------|---------|--------|
-| 1 | [Stage] | [Goal] | [What they do] | [Where] | [State] | #12, #34 |
-| **2** | **[This requirement]** | **[Goal]** | **[Actions]** | **[Where]** | **[State]** | **#[this]** |
-| 3 | [Stage] | [Goal] | [What they do] | [Where] | [State] | *(none)* |
-
-### Usability Touchpoints
-- **Accessibility:** [Considerations]
-- **Discoverability:** [How users find this]
-- **Error states:** [What happens when things go wrong]
-- **Empty states:** [First-time / nothing-to-show]
-- **Edge cases:** [What happens when…]
-
-### Friction Risks
-- **[Risk]:** [Where it shows up; why it matters]
-
-### Journey Gaps
-- **[Gap]:** [What's missing; which stage is affected]
-
-### Moments That Matter
-- **[Moment]:** [Why it matters; opportunity or risk]
-
-### Cross-Journey Dependencies
-- **[Dependency]:** [Shared stage or handoff point]
+- **Journey:** [One sentence: what broader flow this belongs to; where this requirement sits in it]
+- **Friction:** [The single most likely place users get stuck or make a costly mistake]
+- **Gap:** [One missing step or broken transition worth flagging — omit if none]
+- **Edge case:** [The most important "what happens when…" scenario — omit if obvious]
 ```
 
-Be concise. Focus on actionable journey insights that genuinely inform this requirement — not an exhaustive service blueprint. If related items are sparse, note the limitation and map what you can from the issue content alone.
+Include only bullets with real findings. 2 bullets is fine. Never write "None identified."
