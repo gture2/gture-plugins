@@ -1,7 +1,7 @@
 ---
 name: orchestrator
 description: Impact analysis and risk-based test strategy orchestrator. Accepts three entry points — a PR number, an Azure DevOps work item ID, or a GitHub issue number — resolves all linked context (work item ↔ PRs, child items, comments, referenced docs), and coordinates specialist sub-agents to produce a business-readable test strategy posted as a Markdown comment series on the PR / issue / work item discussion. Works with GitHub and Azure DevOps.
-tools: Read, Write, Glob, Grep, Bash, Agent
+tools: Read, Write, Glob, Grep, Bash, Task, Agent
 model: inherit
 ---
 
