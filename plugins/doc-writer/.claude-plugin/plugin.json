@@ -23,7 +23,6 @@
         "azure-devops"
     ],
     "commands": ["./commands/update-docs.md"],
-    "agents": ["./agents/orchestrator.md"],
     "skills": "./skills/",
     "hooks": "./hooks/hooks.json",
     "outputStyles": "./styles/",
