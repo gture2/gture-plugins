@@ -42,27 +42,11 @@ The plugin is a **thinking partner**, not a gatekeeper. Frame everything as obse
 
 ---
 
-### Intent & User Context
-
-- **Who & when:** [Primary user; situational context — calm planning vs high-stress operation]
-- **Constraints:** [Time, device, connectivity, regulation — only if relevant]
-- **Workflow:** [Before → this step → after; happy path; key edge flows]
-- **Decision points:** [Where users think; what can be automated vs must stay human]
-
----
-
 ### Context
 
-> Compact signal from journey, persona, and domain lenses. Each sub-section is 2–3 bullets from the respective analyst. Skip any sub-section with no findings.
+> 5–8 bullets from the context-analyst covering intent, journey, personas, domain, and competitor patterns. No sub-sections — bullets as-is. Skip this section if no findings.
 
-#### Journey
-[Bullet points from journey-mapper]
-
-#### Personas
-[Bullet points from persona-analyst]
-
-#### Domain
-[Bullet points from domain-analyst]
+[Bullet points from context-analyst]
 
 ---
 
@@ -78,12 +62,5 @@ The plugin is a **thinking partner**, not a gatekeeper. Frame everything as obse
 
 ---
 
-### Risks, Dependencies & Assumptions
-
-- **Value & priority:** [Primary value driver; possible MVP vs nice-to-have; time sensitivity]
-- **Risks:** [Specific to this item — with mitigation idea]
-- **Dependencies:** [Upstream / downstream / external]
-- **Assumptions to validate:** [Conditions assumed true — worth confirming with the product owner]
-
-*(Skip subsections with no findings.)*
+> After posting these sections, the orchestrator posts the Refined Requirement as a final separate comment using `styles/requirement-template.md`.
 
