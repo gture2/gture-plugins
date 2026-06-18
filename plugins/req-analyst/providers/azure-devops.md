@@ -105,26 +105,9 @@ If posting the starting comment fails, output a single warning line and continue
 
 ---
 
-## Posting the Elaboration
+## Posting a Comment
 
-The original work item description is **never modified**. All elaboration is posted as **separate comments** — one per lens.
-
-### Comment Order
-
-Post each lens as its own work item comment. Each comment must have a clear heading.
-
-| # | Comment | Heading | Source |
-|---|---------|---------|--------|
-| 1 | Elaboration Summary | `## 📋 Elaboration Summary` | Orchestrator (compiled) |
-| 2 | Fit with Existing Requirements | `## 🧩 Fit with Existing Requirements` | Orchestrator (from doc indexing in Step 2) |
-| 3 | Intent & User Context | `## 🔍 Intent & User Context` | intent-analyst |
-| 4 | User Journey | `## 🗺️ User Journey` | journey-mapper |
-| 5 | Personas & Adoption | `## 👥 Personas & Adoption` | persona-analyst |
-| 6 | Domain & Competitive Context | `## 🏢 Domain & Competitive Context` | domain-analyst |
-| 7 | Open Questions & Gaps | `## ❓ Open Questions & Gaps` | gap-risk-analyst |
-| 8 | Refined Requirement | `## 📝 Refined Requirement` | Orchestrator (Step 10 — always last) |
-
-**Skip** any comment (1–7) whose source produced no meaningful findings (e.g. a narrow bug fix may not need Journey, Personas, or Fit). Comment 8 (Refined Requirement) is **always posted** — it is the actionable output of the full analysis.
+Azure DevOps must be told that comment bodies are Markdown. If you omit `format=markdown`, the API stores the text as plain content and the UI shows `##`, tables, and emphasis as raw characters.
 
 ### Posting each comment
 

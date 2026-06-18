@@ -218,7 +218,7 @@ Pick one signal as a **triage hint** for the team. The signal is secondary; the 
 3. **Context** — the bullet points returned by context-analyst, under the heading `## Context`. No sub-sections — just the bullets as-is.
 4. **Open Questions & Gaps** — from gap-risk-analyst, framed as prompts
 
-Each comment is self-contained with a clear heading (e.g. `## 🔍 Intent & User Context`).
+Each comment is self-contained with a clear heading (e.g. `## Context`).
 
 Follow the platform-specific posting instructions:
 
