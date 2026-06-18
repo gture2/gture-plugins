@@ -25,7 +25,7 @@ A lightweight readiness signal (`GROOMED` / `NEEDS CLARIFICATION` / `NEEDS DECOM
 
 Execute all steps autonomously without pausing for user input. Do not ask for confirmation, clarification, or approval at any point. If a step fails, output a single error line describing what failed and stop.
 
-**Non-destructive posting:** The original issue/work item description is never modified. All elaboration output is posted as **ordered comments** — one per lens. This preserves the author's original description and creates a reviewable thread.
+**Non-destructive posting:** The original issue/work item description is never modified. All elaboration output is posted as **ordered comments** — one per section. This preserves the author's original description and creates a reviewable thread.
 
 **Source abstraction:** Sub-agents are source-agnostic — they receive the item content (title, body, related items) and the repo documentation context as input and produce analysis output. Only Steps 0, 1, and 8 are platform-specific.
 
@@ -211,14 +211,12 @@ Pick one signal as a **triage hint** for the team. The signal is secondary; the 
 
 ## 9. Post the Elaboration
 
-**Never modify the issue/work item body.** Post each lens as a separate comment, in this order:
+**Never modify the issue/work item body.** Post exactly these 4 comments, in order. Do NOT create separate comments for intent, user journey, personas, or domain — all of those come from context-analyst's bullet output and belong in comment 3.
 
-1. **Elaboration Summary** — short overview, readiness signal, key takeaways
-2. **Fit with Existing Requirements** — overlaps / dependencies / contradictions / gaps against existing PRDs, specs, ADRs, feature briefs (skip if the repo has no requirement documents)
-3. **Context** — the bullet points returned by context-analyst, under the heading `## Context`. No sub-sections — just the bullets as-is.
-4. **Open Questions & Gaps** — from gap-risk-analyst, framed as prompts
-
-Each comment is self-contained with a clear heading (e.g. `## Context`).
+1. **Elaboration Summary** — short overview, readiness signal, key takeaways. Heading: `## Elaboration Summary`
+2. **Fit with Existing Requirements** — overlaps / dependencies / contradictions / gaps against existing PRDs, specs, ADRs, feature briefs. Heading: `## Fit with Existing Requirements`. Skip if the repo has no requirement documents.
+3. **Context** — post the bullet points returned by context-analyst verbatim, under `## Context`. No sub-sections, no expansion, no rewriting. Just the bullets as-is.
+4. **Open Questions & Gaps** — from gap-risk-analyst, framed as prompts. Heading: `## Open Questions & Gaps`. Skip if gap-risk-analyst produced no findings.
 
 Follow the platform-specific posting instructions:
 
@@ -260,7 +258,7 @@ Mark the confidence column in FR/NFR tables as **Assumed** for any row derived f
 
 Post this comment last, after all other elaboration comments, using the platform posting method:
 
-- **GitHub:** `gh issue comment ${ISSUE_NUMBER}` with heading `## 📝 Refined Requirement`
+- **GitHub:** `gh issue comment ${ISSUE_NUMBER}` with heading `## Refined Requirement`
 - **Azure DevOps:** REST API POST to the work item comments endpoint (see `providers/azure-devops.md`)
 - **Generic / plain text:** Append as the final section of `requirement-elaboration-report.md` (see `providers/generic.md`)
 

@@ -61,9 +61,9 @@ Post a single starting comment on the issue immediately after fetching it so the
 
 ```bash
 gh issue comment ${ISSUE_NUMBER} --body "$(cat <<'EOF'
-📋 **Requirement elaboration in progress**
+**Requirement elaboration in progress**
 
-I'm surrounding this item with the context a senior analyst would bring — intent, user journey, personas & adoption, domain & competitive insight, fit with existing requirements, and open questions. The elaboration will be posted as a series of comments when complete — this may take a few minutes.
+Surrounding this item with analyst context for the next refinement session. The elaboration will be posted as a series of comments when complete — this may take a few minutes.
 EOF
 )"
 ```

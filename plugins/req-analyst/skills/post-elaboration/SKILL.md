@@ -37,11 +37,11 @@ Do not ask for confirmation at any point. Execute all steps autonomously and pro
 
    | # | Comment | Heading | Always? |
    |---|---------|---------|---------|
-   | 1 | Elaboration Summary | `## 📋 Elaboration Summary` | Yes |
-   | 2 | Fit with Existing Requirements | `## 🧩 Fit with Existing Requirements` | Skip if no req docs |
-   | 3 | Context | `## 🔍 Context` | Skip if no findings |
-   | 4 | Open Questions & Gaps | `## ❓ Open Questions & Gaps` | Skip if no findings |
-   | 5 | Refined Requirement | `## 📝 Refined Requirement` | Yes — always last |
+   | 1 | Elaboration Summary | `## Elaboration Summary` | Yes |
+   | 2 | Fit with Existing Requirements | `## Fit with Existing Requirements` | Skip if no req docs |
+   | 3 | Context | `## Context` | Skip if no findings |
+   | 4 | Open Questions & Gaps | `## Open Questions & Gaps` | Skip if no findings |
+   | 5 | Refined Requirement | `## Refined Requirement` | Yes — always last |
 
    Comment 5 uses `styles/requirement-template.md` — follow that template exactly.
 
