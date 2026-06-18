@@ -42,7 +42,7 @@ Each section is posted as a **separate comment** on the issue/work item, preserv
 
 1. **Elaboration Summary** — a short overview, the readiness signal, and the key takeaways
 2. **Fit with Existing Requirements** — overlaps, dependencies, contradictions, gaps with PRDs/specs/ADRs/feature briefs already in the repo *(skipped if no requirement docs exist)*
-3. **Context** — the 5–8 bullets returned by context-analyst as-is, under `## 🔍 Context`. No sub-sections, no expansion.
+3. **Context** — the 5–8 bullets returned by context-analyst as-is, under `## Context`. No sub-sections, no expansion.
 4. **Open Questions & Gaps** — assumptions to validate, ACs worth tightening — as prompts for the next refinement *(skipped if no findings)*
 5. **Refined Requirement** — a structured requirement spec compiled from the full analysis, always posted last
 

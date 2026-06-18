@@ -12,7 +12,7 @@ This template defines the structured requirement comment the orchestrator posts 
 
 ---
 
-## 📝 Refined Requirement
+## Refined Requirement
 
 > This is a structured representation of the original issue, enriched by the elaboration analysis.  
 > Items marked **TODO** are agent assumptions — please review and update before pickup.

@@ -98,7 +98,7 @@ curl -s -u ":${AZURE-DEVOPS-TOKEN}" \
   -X POST \
   -H "Content-Type: application/json" \
   "https://dev.azure.com/${AZURE_ORG}/${AZURE_PROJECT}/_apis/wit/workitems/${WORK_ITEM_ID}/comments?format=markdown&api-version=7.1-preview.4" \
-  -d '{"text":"📋 **Requirement elaboration in progress**\n\nSurrounding this item with the context a senior analyst would bring — intent, user journey, personas & adoption, domain & competitive insight, fit with existing requirements, and open questions. The elaboration will be posted as a series of comments when complete — this may take a few minutes."}'
+  -d '{"text":"**Requirement elaboration in progress**\n\nSurrounding this item with analyst context for the next refinement session. The elaboration will be posted as a series of comments when complete — this may take a few minutes."}'
 ```
 
 If posting the starting comment fails, output a single warning line and continue — do not stop the elaboration.
