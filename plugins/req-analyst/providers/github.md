@@ -63,7 +63,15 @@ Post a single starting comment on the issue immediately after fetching it so the
 gh issue comment ${ISSUE_NUMBER} --body "$(cat <<'EOF'
 **Requirement elaboration in progress**
 
-Surrounding this item with analyst context for the next refinement session. The elaboration will be posted as a series of comments when complete — this may take a few minutes.
+A senior analyst is surrounding this item with context for the next refinement session. The following will be posted as ordered comments:
+
+1. **Elaboration Summary** — readiness signal and key takeaways
+2. **Fit with Existing Requirements** — overlaps, dependencies, contradictions, and gaps against existing docs
+3. **Context** — intent, user journey, personas, domain, and competitive patterns
+4. **Open Questions & Gaps** — discussion prompts for the next refinement session
+5. **Refined Requirement** — structured specification with functional requirements, user journey, and acceptance criteria
+
+This is a thinking-partner exercise — the original description will not be modified.
 EOF
 )"
 ```
@@ -139,5 +147,5 @@ git remote get-url origin
 On completion:
 
 ```
-Elaboration posted on issue #<number>: <signal> — <N> comments — <N> open questions
+Elaboration posted on issue #<number>: <signal> — <N> comments — <N> open questions — refined requirement posted
 ```
